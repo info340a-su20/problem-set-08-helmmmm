@@ -12,12 +12,12 @@ class App extends Component {
     }
   }
 
-  adopt = ((petName) => {
-    this.setState((state) => {
+  adopt = (petName) => {
+    this.setState( (state) => {
       state.pets.includes(petName).setState({adopted: true})
     })
     return this.state;
-  })
+  }
 
   render() {
     return (
@@ -95,13 +95,13 @@ class BreedNav extends Component {
 class PetCard extends Component {
 
   render() {
+    // console.log(this.state.pets);
+    // let displayedName = this.props.pets.name;
+    // if (this.state.adopted == true) {
+    //   displayedName = this.props.pets.name+" (Adopted)";
+    // } 
     
-    let displayedName = this.props.pets.name;
-    if (this.state.adopted == true) {
-      displayedName = this.props.pets.name+" (Adopted)";
-    } 
-    
-    console.log(displayedName);
+    // console.log(displayedName);
 
     return (
       <div className="card">
