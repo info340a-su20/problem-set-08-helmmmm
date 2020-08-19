@@ -1,6 +1,7 @@
 import React, { Component } from 'react'; //import React Component
 import './style.css';
 import {groupBy} from 'lodash';
+import {find} from 'lodash';
 
 class App extends Component {
 
@@ -14,13 +15,14 @@ class App extends Component {
   }
 
   adopt = (petName) => {
-    this.setState( (state) => {
-      state.pets.includes(petName).setState({adopted: true})
-    })
+    let pet = find(this.state.pets, ['name', petName]);
+    pet.setState({adopted: true});
+
     return this.state;
   }
 
   render() {
+    console.log(this.state.pets);
     return (
       <React.Fragment>
         <header className="jumbotron jumbotron-fluid py-4">
@@ -94,20 +96,19 @@ class BreedNav extends Component {
 
 class PetCard extends Component {
 
+  
+  
   render() {
-    // console.log(this.state.pets);
-    // let displayedName = this.props.pets.name;
-    // if (this.state.adopted == true) {
-    //   displayedName = this.props.pets.name+" (Adopted)";
-    // } 
-    
-    // console.log(displayedName);
+    let displayedName = this.props.pets.name;
+    if (this.props.pets.adopted == true) {
+      displayedName = displayedName+" (Adopted)";
+    }
 
     return (
       <div className="card">
         <img className="card-img-top" src={this.props.pets.img} alt={this.props.pets.name} />
         <div className="card-body">
-          <h3 className="card-title">{this.props.pets.name}</h3>
+          <h3 className="card-title">{displayedName}</h3>
           <p className="card-text">{this.props.pets.sex} {this.props.pets.breed}</p>
         </div>
       </div>
@@ -120,7 +121,7 @@ class PetList extends Component {
   render() {
 
     let petsArray = this.props.pets.map((pet) => {
-      return <PetCard pets={pet} />
+      return <PetCard pets={pet} onClick={this.adopt}/>
     })
 
     return (
