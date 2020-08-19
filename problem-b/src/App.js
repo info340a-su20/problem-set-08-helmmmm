@@ -15,14 +15,16 @@ class App extends Component {
   }
 
   adopt = (petName) => {
-    let pet = find(this.state.pets, ['name', petName]);
-    pet.setState({adopted: true});
+    this.setState({adopted: true}, 
+      (state) => {
+        let petObj = find(this.state.pets, ['name', petName]);
+        petObj.state.adopted = !state.adopted;
+      })
 
     return this.state;
   }
 
   render() {
-    console.log(this.state.pets);
     return (
       <React.Fragment>
         <header className="jumbotron jumbotron-fluid py-4">
@@ -39,7 +41,7 @@ class App extends Component {
             </div> 
 
             <div id="petList" className="col-9">
-              <PetList pets={this.state.pets}/>
+              <PetList pets={this.state.pets} adoptCallback={this.adopt}/>
             </div>
           </div>
         </main>
@@ -96,16 +98,21 @@ class BreedNav extends Component {
 
 class PetCard extends Component {
 
-  
-  
+  handleClick(event) {
+    this.props.adoptCallback ((petName) => {
+      this.adopt(petName);
+    })
+  }
+
   render() {
+
     let displayedName = this.props.pets.name;
     if (this.props.pets.adopted == true) {
       displayedName = displayedName+" (Adopted)";
     }
 
     return (
-      <div className="card">
+      <div className="card" onClick={this.handleClick}>
         <img className="card-img-top" src={this.props.pets.img} alt={this.props.pets.name} />
         <div className="card-body">
           <h3 className="card-title">{displayedName}</h3>
@@ -121,7 +128,7 @@ class PetList extends Component {
   render() {
 
     let petsArray = this.props.pets.map((pet) => {
-      return <PetCard pets={pet} onClick={this.adopt}/>
+      return <PetCard pets={pet} adoptCallback={this.adoptCallback} />
     })
 
     return (
