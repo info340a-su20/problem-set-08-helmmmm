@@ -15,13 +15,15 @@ class App extends Component {
   }
 
   adopt = (petName) => {
-    this.setState({adopted: true}, 
-      (state) => {
-        let petObj = find(this.state.pets, ['name', petName]);
-        petObj.state.adopted = !state.adopted;
-      })
+    this.setState((state) => {
+      state = this.state;
+      let petObj = find(this.state.pets, ['name', petName]);
+      state.adopted = !state.adopted;
+      console.log(this.state);
+      // console.log(petObj);
 
-    return this.state;
+      return this.state;
+    })
   }
 
   render() {
@@ -41,7 +43,7 @@ class App extends Component {
             </div> 
 
             <div id="petList" className="col-9">
-              <PetList pets={this.state.pets} adoptCallback={this.adopt}/>
+              <PetList pets={this.state.pets} adoptCallback={this.adopt} />
             </div>
           </div>
         </main>
@@ -98,16 +100,15 @@ class BreedNav extends Component {
 
 class PetCard extends Component {
 
-  handleClick(event) {
-    this.props.adoptCallback ((petName) => {
-      this.adopt(petName);
-    })
+  handleClick = () => {
+    this.props.adoptCallback(this.props.pets.name);
+    // console.log(this.props.adoptCallback(this.props.pets.name));
   }
 
   render() {
 
     let displayedName = this.props.pets.name;
-    if (this.props.pets.adopted == true) {
+    if ((this.props.pets.name) == true) {
       displayedName = displayedName+" (Adopted)";
     }
 
@@ -128,7 +129,7 @@ class PetList extends Component {
   render() {
 
     let petsArray = this.props.pets.map((pet) => {
-      return <PetCard pets={pet} adoptCallback={this.adoptCallback} />
+      return <PetCard pets={pet} adoptCallback={this.props.adoptCallback} />
     })
 
     return (
