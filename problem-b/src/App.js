@@ -1,5 +1,6 @@
 import React, { Component } from 'react'; //import React Component
 import './style.css';
+import {groupBy} from 'lodash';
 
 class App extends Component {
 
@@ -31,7 +32,7 @@ class App extends Component {
         <main className="container">
           <div className="row">
             <div id="navs" className="col-3">
-              <BreedNav breeds={this.state.pets}/>
+              <BreedNav breeds={Object.keys(groupBy(this.state.pets, 'breed'))}/>
               <AboutNav />
             </div> 
 
@@ -71,12 +72,11 @@ class AboutNav extends Component {
 
 class BreedNav extends Component {
 
-  render() {
-
+  render() {  
     let breedsArray = this.props.breeds.map((item) => {
       return (
-        <li key={item.name}>
-          <a href="">{item.breed}</a>
+        <li key={item}>
+          <a href="">{item}</a>
         </li>
       )
     })
