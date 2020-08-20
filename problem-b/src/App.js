@@ -10,19 +10,19 @@ class App extends Component {
 
     this.state = {
       pets: this.props.pets,
-      adopted: false
+      adopted: false,
     }
   }
 
   adopt = (petName) => {
     this.setState((state) => {
-      state = this.state;
-      let petObj = find(this.state.pets, ['name', petName]);
-      state.adopted = !state.adopted;
-      console.log(this.state);
-      // console.log(petObj);
-
-      return this.state;
+      let petObj = this.state.pets.find(pet => pet.name == petName);
+      if (petObj.adopted == undefined) {
+        petObj.adopted = true;
+      }
+      petObj.adopted = !petObj.adopted;
+    
+      return petObj;
     })
   }
 
@@ -99,16 +99,21 @@ class BreedNav extends Component {
 }
 
 class PetCard extends Component {
+  constructor(props) {
+    super(props);
+  }
 
   handleClick = () => {
     this.props.adoptCallback(this.props.pets.name);
-    // console.log(this.props.adoptCallback(this.props.pets.name));
   }
 
   render() {
 
     let displayedName = this.props.pets.name;
-    if ((this.props.pets.name) == true) {
+    if (this.props.pets.adopted == undefined) {
+      this.props.pets.adopted = false;
+    }
+    if ((this.props.pets.adopted) == true) {
       displayedName = displayedName+" (Adopted)";
     }
 
